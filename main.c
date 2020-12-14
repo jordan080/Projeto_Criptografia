@@ -2,14 +2,22 @@
 #include <time.h>
 #include <math.h>
 #include <stdlib.h>
+#include <string.h>
 #include "biblioteca.h"
 
 //função pra testar
-void print_an_string(char str[]) // tive problemas com o puts(), para variar...
+// TIRAR DAQUI E BOTAR NA LIBRARIES.C//
+void print_an_array(int array[], int len)
 {
-    for(int i = 0; str[i] != '\0'; i++) 
-        printf("%c", str[i]);
-    printf("\n");
+    printf("{");
+    for(int i = 0; i < len; i++) 
+        i == len - 1 ? printf("%d}\n", array[i]) : printf("%d, ", array[i]);
+}
+
+void to_upper_if_need(char str[], int len)
+{
+    for(int i = 0; i < len; i++)
+        str[i] = str[i] > 'Z' ? str[i] - 32 : str[i];
 }
 
 char* read_str(char *tex)
@@ -32,6 +40,13 @@ char* read_str(char *tex)
     return tex;
 }
 
+void codification(int array[], char str[], int len) // Considerar deletar a str, para dar mais confiança e segurança ao codigo.
+{
+    for(int i = 0; i < len; i++)
+        array[i] = (str[i] == ' ' ? 28 : str[i] - 'A' + 2);
+}
+// TIRAR DAQUI E BOTAR NA LIBRARIES.C//
+
 int main()
 {
     int escolha;
@@ -40,29 +55,29 @@ int main()
 
     if (escolha == 1)
     {
-        int p, q, e;
+        long p, q, e;
         printf("Digite dois números primos (preferencialmente grandes) e um expoente primo aos outros dois:\n");
-        scanf("%d%d%d", &p, &q, &e);
+        scanf("%ld%ld%ld", &p, &q, &e);
 
-        char c = getchar();
+        getchar();
 
         while(ehPrimo(p) == 0)
         {
             printf("O primeiro número não é primo, tente novamente: ");
-            scanf("%d", &p);
+            scanf("%ld", &p);
         }
         while(ehPrimo(q) == 0)
         {
             printf("O segundo número não é primo, tente novamente: ");
-            scanf("%d", &q);
+            scanf("%ld", &q);
         }
         while((mdcEuclides((p - 1) * (q - 1), e) != 1))
         {
-            printf("O expoente não primo entre p e q, tente novamente: ");
-            scanf("%d", &e);
+            printf("O expoente não é primo entre p e q, tente novamente: ");
+            scanf("%ld", &e);
         }
 
-        int n = p * q;
+        long n = p * q;
 
         FILE *fptr;
 
@@ -74,7 +89,43 @@ int main()
             exit(1);
         }
         fprintf(fptr, "%s", "Suas chaves são:\n");
-        fprintf(fptr, "%d ", n);
-        fprintf(fptr, "%d\n", e);
+        fprintf(fptr, "%ld ", n);
+        fprintf(fptr, "%ld\n", e);
+    }
+    if (escolha == 2)
+    {
+        getchar();
+
+        printf("Digite a mensagem que se deseja encriptar:\n");
+
+        char* mens = read_str(mens);
+
+        int len = strlen(mens);
+
+        to_upper_if_need(mens, len);
+
+        printf("Digite a chave pública recebida:\n");
+        long n2; scanf("%ld", &n2);
+
+        int code[len - 1];
+
+        codification(code, mens, len - 1);
+
+        FILE *fptr2;
+
+        fptr2 = fopen("saida_mens_encr.txt", "w");
+
+        if (fptr2 == NULL)
+        {
+            printf("Erro!");
+            exit(1);
+        }
+
+        fprintf(fptr2, "%s", "Mensagem encriptada:\n");
+        for (int i = 0; i < len; i++)
+        {
+            fprintf(fptr2, "%d", code[i]);
+        }
+        fprintf(fptr2, "%s", "\n");
     }
 }

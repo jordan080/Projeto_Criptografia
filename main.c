@@ -40,10 +40,21 @@ char* read_str(char *tex)
     return tex;
 }
 
-void codification(int array[], char str[], int len) // Considerar deletar a str, para dar mais confiança e segurança ao codigo.
+void codification(long array[], char str[], int len) // Considerar deletar a str, para dar mais confiança e segurança ao codigo.
 {
     for(int i = 0; i < len; i++)
         array[i] = (str[i] == ' ' ? 28 : str[i] - 'A' + 2);
+}
+
+long power(long base, long exp) {
+    if (exp == 0)
+        return 1;
+    else if (exp % 2)
+        return base * power(base, exp - 1);
+    else {
+        long temp = power(base, exp / 2);
+        return temp * temp;
+    }
 }
 // TIRAR DAQUI E BOTAR NA LIBRARIES.C//
 
@@ -81,7 +92,7 @@ int main()
 
         FILE *fptr;
 
-        fptr = fopen("saida.txt", "w");
+        fptr = fopen("ch.txt", "w");
 
         if (fptr == NULL)
         {
@@ -105,15 +116,20 @@ int main()
         to_upper_if_need(mens, len);
 
         printf("Digite a chave pública recebida:\n");
-        long n2; scanf("%ld", &n2);
+        long n2, e2; scanf("%ld%ld", &n2, &e2);
 
-        int code[len - 1];
+        long code[len - 1];
 
         codification(code, mens, len - 1);
 
+        for (int i = 0; i < len; i++)
+        {
+            code[i] = (power(code[i], e2)) % n2;
+        }
+
         FILE *fptr2;
 
-        fptr2 = fopen("saida_mens_encr.txt", "w");
+        fptr2 = fopen("mens_encr.txt", "w");
 
         if (fptr2 == NULL)
         {
@@ -122,10 +138,20 @@ int main()
         }
 
         fprintf(fptr2, "%s", "Mensagem encriptada:\n");
-        for (int i = 0; i < len; i++)
+        for (int i = 0; i < len - 1; i++)
         {
-            fprintf(fptr2, "%d", code[i]);
+            fprintf(fptr2, "%ld, ", code[i]);
         }
         fprintf(fptr2, "%s", "\n");
+    }
+    if (escolha == 3)
+    {
+        long p2, q2, e2;
+        printf("Digite dois números primos (preferencialmente grandes) e um expoente primo aos outros dois:\n");
+        scanf("%ld%ld%ld", &p2, &q2, &e2);
+
+        getchar();
+
+        char digit_list[28] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', '\0'};
     }
 }

@@ -1,0 +1,12 @@
+int request_menu();
+void request_p_q_e();
+void encriptar();
+void desencriptar();
+int select_menu(int escolha, int* p, int* q, int* e);
+int arrayMdc(int numero_1, int numero_2, int array[], int i);
+int invArray(int array[], int array_inv[], int tam);
+int combLinear(int numero_1, int numero_2, int array_inv[], int tam, int mdc);
+int mdcEuclides(int numero_1, int numero_2);
+int contaRestos(int numero_1, int numero_2, int i);
+int ehPrimo(int numero);
+int ordemCrescente (int* numero_1, int* numero_2);

@@ -4,6 +4,34 @@
 #include <stdlib.h>
 #include "biblioteca.h"
 
+//função pra testar
+void print_an_string(char str[]) // tive problemas com o puts(), para variar...
+{
+    for(int i = 0; str[i] != '\0'; i++) 
+        printf("%c", str[i]);
+    printf("\n");
+}
+
+char* read_str(char *tex)
+{
+    int len = 10;
+    int count = 0;
+    tex = malloc(len * sizeof(char));
+    char c;
+
+    while ((c = getchar()) != '\n' )
+    {
+        if (count >= len)
+        {
+            tex = realloc(tex, (len += 10) * sizeof(char)); 
+        }
+
+        tex[count++] = c;
+    }
+
+    return tex;
+}
+
 int main()
 {
     int escolha;
@@ -16,6 +44,8 @@ int main()
         printf("Digite dois números primos (preferencialmente grandes) e um expoente primo aos outros dois:\n");
         scanf("%d%d%d", &p, &q, &e);
 
+        char c = getchar();
+
         while(ehPrimo(p) == 0)
         {
             printf("O primeiro número não é primo, tente novamente: ");
@@ -26,7 +56,7 @@ int main()
             printf("O segundo número não é primo, tente novamente: ");
             scanf("%d", &q);
         }
-        while((mdcEuclides(p, e) != 1) && (mdcEuclides(q, e) != 1))
+        while((mdcEuclides((p - 1) * (q - 1), e) != 1))
         {
             printf("O expoente não primo entre p e q, tente novamente: ");
             scanf("%d", &e);
@@ -34,34 +64,17 @@ int main()
 
         int n = p * q;
 
-        int z = (p - 1) * (q - 1);
+        FILE *fptr;
 
-        char* tex;
-        int m = 30;
+        fptr = fopen("saida.txt", "w");
 
-        tex = (char*)malloc(m * sizeof(char));
-
-        printf("Digite aqui a mensagem que deseja encriptar:");
-        
-        for (int i = 0; i < m; i++)
+        if (fptr == NULL)
         {
-            if (tex[i] == NULL)
-            {
-              m = m + 30;
-              tex = (char*)malloc(m * sizeof(char));  
-            }
-
-            scanf("%c", &tex[i]);
+            printf("Erro!");
+            exit(1);
         }
-
-        int alfa_num[26];
-
-        for(int j = 0; j < 26; j++)
-        {
-            alfa_num[j] = j + 2;
-        }
-
-        
+        fprintf(fptr, "%s", "Suas chaves são:\n");
+        fprintf(fptr, "%d ", n);
+        fprintf(fptr, "%d\n", e);
     }
-
 }

@@ -39,7 +39,7 @@ int select_menu()
             flag = 1;
 			break;
         case 3:
-        	//desencriptar();
+        	desencriptar();
             flag = 1;
             break;
 		default: 

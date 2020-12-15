@@ -62,7 +62,7 @@ void criptografa(long array[], long len, long e, long n)
        array[i] = fast_modular_exponentiation(array[i], e, n);
     }
 }
-void encriptar()
+void intro_encriptar()
 {
     system("clear");
 	printf(" ___________________________________\n");
@@ -70,6 +70,10 @@ void encriptar()
 	printf("|            Encriptar              |\n");
 	printf("|                                   |\n");	
 	printf("|___________________________________|\n\n");
+}
+void encriptar()
+{
+    intro_encriptar();
 
     char text[1000000];
     printf("Digite a mensagem de texto que se deseja encriptar:\n");
@@ -91,7 +95,7 @@ void encriptar()
     printf("n: ");
     scanf("%ld", &n);
     printf("e: ");
-    scanf("%ld", &n);
+    scanf("%ld", &e);
 
     //Converte texto original em texto criptografado.
     criptografa(code, len - 1, e, n);
@@ -111,8 +115,9 @@ void encriptar()
     //Imprime o texto criptografado no arquivo.
     print_array_file(code, len - 1, f);
 
-    printf("\n\nDigite (1), para voltar ao menu: ");
     fclose(f);
+    
+    printf("\n\nDigite (1), para voltar ao menu: ");
 	int continuar;
     scanf("%d", &continuar);
 }

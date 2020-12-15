@@ -12,7 +12,6 @@
 void intro_gerar_chave()
 {
 	system("clear");
-
 	printf(" ___________________________________\n");
 	printf("|                                   |\n");
 	printf("|          Chave Pública            |\n");

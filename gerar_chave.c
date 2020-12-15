@@ -6,6 +6,7 @@
 //other libraries 
 #include "gerar_chave.h"
 #include "matematica_discreta.h"
+#include "encriptar.h"
 
 //void request_menu(char* escolha) 
 int request_menu() 
@@ -34,7 +35,7 @@ int select_menu(int escolha, long* p, long* q, long* e)
             flag = 1;
         	break;
 		case 2:
-			//encriptar();
+			encriptar();
             flag = 2;
 			break;
         case 3:
@@ -49,6 +50,14 @@ int select_menu(int escolha, long* p, long* q, long* e)
 }
 void request_p_q_e(long* p, long* q, long* e)
 {
+	system("clear");
+
+	printf(" ___________________________________\n");
+	printf("|                                   |\n");
+	printf("|          Chave Pública            |\n");
+	printf("|                                   |\n");	
+	printf("|___________________________________|\n");
+
     printf("Digite um número primo p: ");
     scanf("%ld", p);
 
@@ -75,6 +84,29 @@ void request_p_q_e(long* p, long* q, long* e)
         printf("O expoente e não é primo entre p e q, tente novamente: ");
         scanf("%ld", e);
     }
+
+	long n = (*p) * (*q);
+
+    FILE *fptr;
+
+    fptr = fopen("ch.txt", "w");
+
+    if (fptr == NULL)
+    {
+        printf("Erro!");
+        exit(1);
+    }
+    fprintf(fptr, "%s", "Suas chaves são:\n");
+    fprintf(fptr, "%ld ", n);
+    fprintf(fptr, "%ld\n", *e);
+
+	fclose(fptr);
+
+	printf("\nA chave pública foi gerada!\n");
+	printf("Digite (1), para voltar ao menu: ");
+
+	int continuar;
+    scanf("%d", &continuar);
 
 	getchar();
 }

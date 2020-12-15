@@ -8,96 +8,111 @@
 //other libraries 
 #include "encriptar.h"
 
-void to_upper_if_need(char str[], int len)
+
+char digit_list[28] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', '\0'};
+
+//Retorna o tamanho da string, contando com o '\n'
+int strLength(char str[]) 
+{
+    int len = 0;
+
+    while(str[len] != '\0')
+        len++;
+
+    return len++;
+}
+void to_upper_if_need(char str[], long len)
 {
     for(int i = 0; i < len; i++)
         str[i] = str[i] > 'Z' ? str[i] - 32 : str[i];
 }
-char* read_str(char *tex)
-{
-    int len = 10;
-    int count = 0;
-    tex = malloc(len * sizeof(char));
-    char c;
-
-    while ((c = getchar()) != '\n' )
-    {
-        if (count >= len)
-        {
-            tex = realloc(tex, (len += 10) * sizeof(char)); 
-        }
-
-        tex[count++] = c;
-    }
-
-    return tex;
-}
-void codification(long array[], char str[], int len) // Considerar deletar a str, para dar mais confiança e segurança ao codigo.
+void codification(long array[], char str[], long len)
 {
     for(int i = 0; i < len; i++)
-        array[i] = (str[i] == ' ' ? 28 : str[i] - 'A' + 2);
+        array[i] = str[i] != ' ' ? str[i] - 'A' + 2 : 28;
 }
-long power(long base, long exp) {
-    if (exp == 0)
-        return 1;
-    else if (exp % 2)
-        return base * power(base, exp - 1);
-    else {
-        long temp = power(base, exp / 2);
-        return temp * temp;
+void print_an_array(long array[], long len)
+{
+    for(int i = 0; i < len; i++) 
+        i == len - 1 ? printf("%ld", array[i]) : printf("%ld ", array[i]);
+}
+void print_array_file(long array[], long len, FILE* f)
+{
+    for(int i = 0; i < len; i++)
+        fprintf(f, "%ld ", array[i]);
+}
+long fast_modular_exponentiation(long texto_puro, long e, long n)
+{
+	long result = 1;
+	if (1 & e)
+		result = texto_puro;
+	while (1) {
+		if (!e) break;
+		e >>= 1;
+		texto_puro = (texto_puro * texto_puro) % n;
+		if (e & 1)
+			result = (result * texto_puro) % n;
+	}
+	return result;
+}
+void criptografa(long array[], long len, long e, long n)
+{
+    for(int i = 0; i < len; i++)
+    {
+       array[i] = fast_modular_exponentiation(array[i], e, n);
     }
 }
 void encriptar()
 {
     system("clear");
-
 	printf(" ___________________________________\n");
 	printf("|                                   |\n");
 	printf("|            Encriptar              |\n");
 	printf("|                                   |\n");	
-	printf("|___________________________________|\n");
+	printf("|___________________________________|\n\n");
 
+    char text[1000000];
+    printf("Digite a mensagem de texto que se deseja encriptar:\n");
     getchar();
+    fgets(text, sizeof(text), stdin);
 
-    printf("Digite a mensagem que se deseja encriptar:\n");
+    long len;
+    len = strLength(text);
+    //Converte caracteres minúsculos para seu equivalente maiúsculo.
+    to_upper_if_need(text, len);
+    
+    long code[len - 1];
+    long n, e;
 
-    char* mens = read_str(mens);
-
-    int len = strlen(mens);
-
-    to_upper_if_need(mens, len);
+    //Converte o alfabeto em números.
+    codification(code, text, len - 1);
 
     printf("Digite a chave pública recebida:\n");
-    
-    long n2, e2;
-    
-    scanf("%ld%ld", &n2, &e2);
+    printf("n: ");
+    scanf("%ld", &n);
+    printf("e: ");
+    scanf("%ld", &n);
 
-    long code[len - 1];
+    //Converte texto original em texto criptografado.
+    criptografa(code, len - 1, e, n);
 
-    codification(code, mens, len - 1);
+    FILE *f;
 
-    for (int i = 0; i < len; i++)
+    f = fopen("texto_criptografado.txt", "w");
+
+    if (f == NULL)
     {
-        code[i] = (power(code[i], e2)) % n2;
-    }
-
-    FILE *fptr2;
-
-    fptr2 = fopen("mens_encr.txt", "w");
-
-    if (fptr2 == NULL)
-    {
-        printf("Erro!");
+        printf("Erro!\n");
         exit(1);
     }
+    //Imprime o texto criptografado no terminal.
+    printf("Texto criptografado:\n");
+    print_an_array(code, len - 1);
+    //Imprime o texto criptografado no arquivo.
+    print_array_file(code, len - 1, f);
 
-    fprintf(fptr2, "%s", "Mensagem encriptada:\n");
-    for (int i = 0; i < len - 1; i++)
-    {
-        fprintf(fptr2, "%ld, ", code[i]);
-    }
-    fprintf(fptr2, "%s", "\n");
-    
-    fclose(fptr2);
+    printf("\n\nDigite (1), para voltar ao menu: ");
+    fclose(f);
+	int continuar;
+    scanf("%d", &continuar);
 }

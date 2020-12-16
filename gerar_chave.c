@@ -24,31 +24,34 @@ void gerar_chave()
 
 	long p, q, e;
 
-	printf("Digite um número primo p: ");
+	printf("Por favor, digite dois números primos p e q.\n");
+	printf("Em seguida, digite um expoente relativamente primo a (p-1)(q-1).\n");
+	printf("p: ");
     scanf("%ld", &p);
 
 
 	while( !ehPrimo(p) )
 	{
-		printf("O primeiro número não é primo, tente novamente: ");
+		printf("p não é primo, tente novamente: ");
 		scanf("%ld", &p);
 	}
 	
-	printf("Digite um número primo q: ");
+	printf("q: ");
     scanf("%ld", &q);
 
 	while( !ehPrimo(q) )
 	{
-		printf("O segundo número não é primo, tente novamente: ");
+		printf("q não é primo, tente novamente: ");
 		scanf("%ld", &q);
 	}
 
-    printf("Digite um expoente e, relativamente primo a (p-1)(q-1): ");
+	printf("e: ");
     scanf("%ld", &e);
 
 	while( mdc( (p - 1)*(q - 1), e) != 1 )
     {
-        printf("O expoente e não é primo entre p e q, tente novamente: ");
+        printf("e não é relativamente primo a (p-1)(q-1), tente novamente.\n");
+		printf("e: ");
         scanf("%ld", &e);
     }
 
@@ -69,7 +72,7 @@ void gerar_chave()
 
 	fclose(fptr);
 
-	printf("\nA chave pública gerada é: %ld\n", n);
+	printf("\nA chave pública gerada é: %ld\n\n", n);
 	printf("Digite (1), para voltar ao menu: ");
 
 	int continuar;

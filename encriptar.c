@@ -7,7 +7,7 @@
 #include <time.h>
 //other libraries 
 #include "encriptar.h"
-
+#include "aritmetica.h"
 
 char digit_list[28] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', '\0'};
 
@@ -40,27 +40,6 @@ void print_array_file(long array[], long len, FILE* f)
 {
     for(int i = 0; i < len; i++)
         fprintf(f, "%ld ", array[i]);
-}
-long fast_modular_exponentiation(long texto_puro, long e, long n)
-{
-	long result = 1;
-	if (1 & e)
-		result = texto_puro;
-	while (1) {
-		if (!e) break;
-		e >>= 1;
-		texto_puro = (texto_puro * texto_puro) % n;
-		if (e & 1)
-			result = (result * texto_puro) % n;
-	}
-	return result;
-}
-void criptografa(long array[], long len, long e, long n)
-{
-    for(int i = 0; i < len; i++)
-    {
-       array[i] = fast_modular_exponentiation(array[i], e, n);
-    }
 }
 void intro_encriptar()
 {
@@ -102,7 +81,7 @@ void encriptar()
 
     FILE *f;
 
-    f = fopen("texto_criptografado.txt", "w");
+    f = fopen("mensagem_criptografada.txt", "w");
 
     if (f == NULL)
     {

@@ -1,3 +1,11 @@
 long ehPrimo(long numero);
 long mdcEuclides(long numero_1, long numero_2);
 long mdc(long numero_1, long numero_2);
+long ordemCrescente(long* numero_1, long* numero_2);
+long contaRestos(long numero_1, long numero_2, long i);
+long mdc_euclides(long numero_1, long numero_2, long resto[], long i);
+void calcula_s_t(long resto[], long j, long i);
+long verifica_intervalo(long s, long numero_2);
+long fast_modular_exponentiation(long texto_puro, long e, long n);
+void criptografa(long array[], long tamanho, long e, long n);
+long inverso(long a, long b);

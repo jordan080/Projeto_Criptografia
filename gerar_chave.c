@@ -67,12 +67,12 @@ void gerar_chave()
         exit(1);
     }
     
-    fprintf(fptr, "%ld\n", n);
+    fprintf(fptr, "%ld ", n);
     fprintf(fptr, "%ld\n", e);
 
 	fclose(fptr);
 
-	printf("\nA chave pública gerada é: %ld\n\n", n);
+	printf("\nA chave pública gerada é: %ld %ld\n\n", n, e);
 	printf("Digite (1), para voltar ao menu: ");
 
 	int continuar;
